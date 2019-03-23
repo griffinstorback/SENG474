@@ -1,5 +1,5 @@
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import sys
 import time
 import csv
@@ -20,7 +20,8 @@ f = open(sys.argv[1])
 
 shot_counts = dict()
 goal_counts = dict()
-goal_positions = dict()
+goal_positions_x = dict()
+goal_positions_y = dict()
 
 shot_counts["Snap Shot"] = 0
 goal_counts["Snap Shot"] = 0
@@ -37,13 +38,21 @@ goal_counts["Backhand"] = 0
 shot_counts["Deflected"] = 0
 goal_counts["Deflected"] = 0
 
-goal_positions["Snap Shot"] = list()
-goal_positions["Slap Shot"] = list()
-goal_positions["Wrist Shot"] = list()
-goal_positions["Wrap-around"] = list()
-goal_positions["Tip-In"] = list()
-goal_positions["Backhand"] = list()
-goal_positions["Deflected"] = list()
+goal_positions_x["Snap Shot"] = list()
+goal_positions_x["Slap Shot"] = list()
+goal_positions_x["Wrist Shot"] = list()
+goal_positions_x["Wrap-around"] = list()
+goal_positions_x["Tip-In"] = list()
+goal_positions_x["Backhand"] = list()
+goal_positions_x["Deflected"] = list()
+
+goal_positions_y["Snap Shot"] = list()
+goal_positions_y["Slap Shot"] = list()
+goal_positions_y["Wrist Shot"] = list()
+goal_positions_y["Wrap-around"] = list()
+goal_positions_y["Tip-In"] = list()
+goal_positions_y["Backhand"] = list()
+goal_positions_y["Deflected"] = list()
 
 for line in f:
     line_values = line.rsplit(",")
@@ -54,7 +63,8 @@ for line in f:
 
     if event == "Goal" and secondary_type != "NA":
         goal_counts[secondary_type] += 1
-        goal_positions[secondary_type].append((x,y))
+        goal_positions_x[secondary_type].append(x)
+        goal_positions_y[secondary_type].append(y)
     elif event == "Shot" and secondary_type != "NA":
         shot_counts[secondary_type] += 1
 
@@ -74,3 +84,11 @@ print("Wrap average: " + str(100 * wrap_average))
 print("Tip average: " + str(100 * tip_average))
 print("Backhand average: " + str(100 * backhand_average))
 print("Deflected average: " + str(100 * deflected_average))
+
+fig, ax = plt.subplots()
+plt.xlim(-100, 100)
+plt.ylim(-60, 60)
+
+ax.scatter(goal_positions_x["Snap Shot"], goal_positions_y["Snap Shot"])
+
+plt.show()
