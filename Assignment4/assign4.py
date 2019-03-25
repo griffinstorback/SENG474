@@ -24,8 +24,13 @@ f = open(sys.argv[1])
 
 # Construct utility matrix
 M = np.empty((n, m))
+
+# Contains all movies rated by given user
 user_rated = dict()
+
+# Contains all users who rated a given movie
 movie_rated = dict()
+
 for line in f:
     user_id, movie_id, rating, timestamp = map(int, line.rsplit('\t'))
     
@@ -40,10 +45,17 @@ for line in f:
     movie_rated[movie_id-1].append(user_id-1)
 
 
+def rmse():
+    known_cells = 0
+    s = 0
 
-def rmse(matrix1, matrix2):
-    rmse = np.sqrt(((matrix1 - matrix2) ** 2).mean())
-    return rmse
+    for i in range(0, n):
+        for j in range(0, m):
+            if j in user_rated[i]:
+                known_cells += 1
+                s += (U[i].dot(V.T[j]) - M[i][j]) ** 2
+
+    return np.sqrt(s/known_cells)
 
 def kth_column_U(M, U, V, i, k):
     s = 0
@@ -89,7 +101,7 @@ for _ in range(0, T):
         for j in range(0, m):
             V[k][j] = kth_row_V(M, U, V, j, k)
     
-    print(rmse(U.dot(V), M))
+    print(rmse())
 
 t1 = time.time()
 print("Took " + str(t1-t0) + " seconds.")
