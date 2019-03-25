@@ -89,7 +89,7 @@ V = np.random.rand(d, m)
 
 # Perform T times
 T = 20
-for _ in range(0, 1):
+for _ in range(0, T):
     
     for k in range(0, d):
 
