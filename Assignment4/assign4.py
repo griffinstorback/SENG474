@@ -89,7 +89,7 @@ V = np.random.rand(d, m)
 
 # Perform T times
 T = 20
-for _ in range(0, T):
+for _ in range(0, 1):
     
     for k in range(0, d):
 
@@ -106,16 +106,39 @@ for _ in range(0, T):
 t1 = time.time()
 print("Took " + str(t1-t0) + " seconds.")
 
-exit(0)
+# Output file headers
+output_columns = []
+output_columns.append("UserId")
+for i in range(0, d):
+    output_columns.append(i+1)
 
 # Open file to write to
-with open("blank.blank", 'wt') as output_file:
+with open("UT.tsv", 'wt') as output_file:
     tsv_writer = csv.writer(output_file, delimiter='\t')
 
     # Write headers
-    tsv_writer.writerow("replace")
+    tsv_writer.writerow(output_columns)
 
     # Write values
-    tsv_writer.writerow("with real values")
+    for i in range(0, n):
+        row = []
+        row.append(i+1)
+        row.extend(U[i])
+        tsv_writer.writerow(row)
+
+# Open second file to write to
+output_columns[0] = "MovieId"
+with open("VT.tsv", 'wt') as output_file:
+    tsv_writer = csv.writer(output_file, delimiter='\t')
+
+    # Write headers
+    tsv_writer.writerow(output_columns)
+
+    # Write values
+    for i in range(0, m):
+        row = []
+        row.append(i+1)
+        row.extend(V.T[i])
+        tsv_writer.writerow(row)
 
 exit(0)
