@@ -18,7 +18,7 @@ def is_number(s):
     except ValueError:
         return False
 
-def print_goal_average_for_each_type_of_shot():
+def print_goal_averages():
     slap_average = 1.0 * goal_counts["Slap Shot"] / (goal_counts["Slap Shot"] + shot_counts["Slap Shot"])
     snap_average = 1.0 * goal_counts["Snap Shot"] / (goal_counts["Snap Shot"] + shot_counts["Snap Shot"])
     wrist_average = 1.0 * goal_counts["Wrist Shot"] / (goal_counts["Wrist Shot"] + shot_counts["Wrist Shot"])
@@ -37,7 +37,7 @@ def print_goal_average_for_each_type_of_shot():
 
     return
 
-def scatter_goal_types_by_color():
+def scatter_goal_locations():
     xx, yy = zip(*goal_positions["Slap Shot"])
     plt.scatter(xx, yy, color="blue")
     xx, yy = zip(*goal_positions["Snap Shot"])
@@ -98,9 +98,11 @@ for line in f:
 # Do something to data
 #
 
-print_goal_average_for_each_type_of_shot()
+# Print goal averages for each type of shot
+print_goal_averages()
 
-scatter_goal_types_by_color()
+# Scatter goal locations, colored by their type
+scatter_goal_locations()
 
 
 # Cluster goals wrt each quadrant of ice
