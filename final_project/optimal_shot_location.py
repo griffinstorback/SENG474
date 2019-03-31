@@ -1,15 +1,22 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-import sys
-import time
-import csv
-from scipy.ndimage.filters import gaussian_filter
+# Course: Seng 474
+# Project: Final
+# Name:             UvicID:
+# Griffin Storback  V00849885
+# Jeffrey Olmstead  V00852585
+# Dallas Brooks     V00868024
 
-# project done in group of three,
-# Griffin Storback - V00849885
-# Jeffrey Olmstead - V00852585
-# Dallas Brooks - V00868024
+# Data:
+#   https://www.kaggle.com/martinellis/nhl-game-data#game_plays.csv
+# File:
+#   game_plays.csv
+
+import sys
+import csv
+import time
+import numpy as np
+import matplotlib.cm as cm
+import matplotlib.pyplot as plt
+from scipy.ndimage.filters import gaussian_filter
 
 t0 = time.time()
 
@@ -33,13 +40,13 @@ def print_goal_averages():
     backhand_average = 1.0 * goal_counts["Backhand"] / (goal_counts["Backhand"] + shot_counts["Backhand"])
     deflected_average = 1.0 * goal_counts["Deflected"] / (goal_counts["Deflected"] + shot_counts["Deflected"])
 
-    print("Slap average: " + str(100 * slap_average))
-    print("Snap average: " + str(100 * snap_average))
-    print("Wrist average: " + str(100 * wrist_average))
-    print("Wrap average: " + str(100 * wrap_average))
-    print("Tip average: " + str(100 * tip_average))
-    print("Backhand average: " + str(100 * backhand_average))
-    print("Deflected average: " + str(100 * deflected_average))
+    print("Slap average:\t\t" + str(round(100 * slap_average, 3)) + "%")
+    print("Snap average:\t\t" + str(round(100 * snap_average, 3)) + "%")
+    print("Wrist average:\t\t" + str(round(100 * wrist_average, 3)) + "%")
+    print("Wrap average:\t\t" + str(round(100 * wrap_average, 3)) + "%")
+    print("Tip average:\t\t" + str(round(100 * tip_average, 3)) + "%")
+    print("Backhand average:\t" + str(round(100 * backhand_average, 3)) + "%")
+    print("Deflected average:\t" + str(round(100 * deflected_average, 3)) + "%")
 
     return
 
@@ -145,6 +152,8 @@ for line in f:
     elif event == "Shot" and secondary_type != "NA":
         shot_counts[secondary_type] += 1
 
+f.close()
+
 t1 = time.time()
 
 #
@@ -153,6 +162,9 @@ t1 = time.time()
 
 # Print goal averages for each type of shot
 print_goal_averages()
+
+# Print time to find data and print averages
+print("Time: " + str((t1-t0)/60))
 
 # Show bar graph of # goals vs # shots for each shot type
 goals_shots_bar_graph()
@@ -165,5 +177,3 @@ goal_location_heat_map("Backhand")
 
 # Scatter goal locations, colored by their type
 scatter_goal_locations()
-
-# Cluster goals wrt each quadrant of ice
